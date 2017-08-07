@@ -1,0 +1,8 @@
+node_modules
+example
+.DS_Store
+coverage
+.nyc_output
+test/config.js
+test/figures/*.zip
+doc/*

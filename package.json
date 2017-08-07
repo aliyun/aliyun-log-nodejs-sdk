@@ -1,0 +1,23 @@
+{
+  "name": "@alicloud/log",
+  "version": "1.0.0",
+  "description": "Aliyun Log Service Node.js SDK",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "make test"
+  },
+  "author": "Jackson Tian",
+  "license": "MIT",
+  "dependencies": {
+    "debug": "^2.6.8",
+    "httpx": "^2.1.2",
+    "kitx": "^1.2.1"
+  },
+  "devDependencies": {
+    "expect.js": "^0.3.1",
+    "mocha": "^3.5.0"
+  }
+}
