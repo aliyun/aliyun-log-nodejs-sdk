@@ -4,8 +4,8 @@ const assert = require('assert');
 
 const Client = require('../lib/client');
 
-describe('client unit test', function () {
-  it('constructor', function () {
+describe('Unit test', function () {
+  it('client constructor should set endpoint correctly', function () {
     const client = new Client({
       accessKeyId: "bq2sjzesjmo86kq35behupbq",
       accessKeySecret: "4fdO2fTDDnZPU/L7CHNdemB2Nsk=",
@@ -14,7 +14,7 @@ describe('client unit test', function () {
     assert.strictEqual(client.endpoint, 'cn-hangzhou.log.aliyuncs.com');
   });
 
-  it('_sign GET', function () {
+  it('client#_sign should sign GET requests correctly', function () {
     const client = new Client({
       accessKeyId: "bq2sjzesjmo86kq35behupbq",
       accessKeySecret: "4fdO2fTDDnZPU/L7CHNdemB2Nsk="
@@ -34,7 +34,7 @@ describe('client unit test', function () {
       'LOG bq2sjzesjmo86kq35behupbq:jEYOTCJs2e88o+y5F4/S5IsnBJQ=');
   });
 
-  it('sign POST', function () {
+  it('client#_sign should sign POST requests correctly', function () {
     const client = new Client({
       accessKeyId: "bq2sjzesjmo86kq35behupbq",
       accessKeySecret: "4fdO2fTDDnZPU/L7CHNdemB2Nsk="
