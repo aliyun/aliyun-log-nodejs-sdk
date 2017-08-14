@@ -68,25 +68,23 @@ describe('Integration test', async function () {
     const projectName = `test-project-${Date.now()}`;
 
     it('createProject should ok', async function () {
-      var result = await client.createProject(projectName, {
+      const res1 = await client.createProject(projectName, {
         description: 'test'
       });
-      assert.strictEqual(result.statusCode, 200);
-      assert.strictEqual(result.body, '');
+      assert.strictEqual(res1, '');
       await sleep(PROJECT_DELAY);  // delay of project creation
-      var r = await client.getProject(projectName);
-      assert.strictEqual(r.body.projectName, projectName);
-      assert.strictEqual(r.body.description, 'test');
+      const res2 = await client.getProject(projectName);
+      assert.strictEqual(res2.projectName, projectName);
+      assert.strictEqual(res2.description, 'test');
     });
 
     it('deleteProject should ok', async function () {
-      var result = await client.deleteProject(projectName);
-      assert.strictEqual(result.statusCode, 200);
-      assert.strictEqual(result.body, '');
+      const res = await client.deleteProject(projectName);
+      assert.strictEqual(res, '');
       try {
-        var r = await client.getProject(projectName);
+        await client.getProject(projectName);
       } catch (ex) {
-        assert.strictEqual(ex.code, 'ProjectNotExist');
+        const res2 = assert.strictEqual(ex.code, 'ProjectNotExist');
         return;
       }
 
@@ -98,45 +96,40 @@ describe('Integration test', async function () {
     const logstoreName = `test-logs-${Date.now()}`;
 
     it('createLogstore should ok', async function () {
-      var result = await client.createLogstore(testProject, logstoreName, {
+      const res1 = await client.createLogstore(testProject, logstoreName, {
         ttl: 10,
         shardCount: 2
       });
-      assert.strictEqual(result.statusCode, 200);
-      assert.strictEqual(result.body, '');
-      var r = await client.getLogstore(testProject, logstoreName);
-      assert.strictEqual(r.body.logstoreName, logstoreName);
-      assert.strictEqual(r.body.ttl, 10);
+      assert.strictEqual(res1, '');
+      const res2 = await client.getLogstore(testProject, logstoreName);
+      assert.strictEqual(res2.logstoreName, logstoreName);
+      assert.strictEqual(res2.ttl, 10);
     });
 
     it('listLogstore should ok', async function () {
-      var result = await client.listLogstore(testProject);
-      assert.strictEqual(result.statusCode, 200);
-      var body = result.body;
-      assert.strictEqual(typeof body.count, 'number');
-      assert.strictEqual(typeof body.total, 'number');
-      assert.strictEqual(Array.isArray(body.logstores), true);
-      assert.strictEqual(body.logstores.length > 0, true);
+      const res = await client.listLogstore(testProject);
+      assert.strictEqual(typeof res.count, 'number');
+      assert.strictEqual(typeof res.total, 'number');
+      assert.strictEqual(Array.isArray(res.logstores), true);
+      assert.strictEqual(res.logstores.length > 0, true);
     });
 
     it('updateLogstore should ok', async function () {
-      var result = await client.updateLogstore(testProject, logstoreName, {
+      const res1 = await client.updateLogstore(testProject, logstoreName, {
         ttl: 20,
         shardCount: 2
       });
-      assert.strictEqual(result.statusCode, 200);
-      assert.strictEqual(result.body, '');
-      var r = await client.getLogstore(testProject, logstoreName);
-      assert.strictEqual(r.body.logstoreName, logstoreName);
-      assert.strictEqual(r.body.ttl, 20);
+      assert.strictEqual(res1, '');
+      const res2 = await client.getLogstore(testProject, logstoreName);
+      assert.strictEqual(res2.logstoreName, logstoreName);
+      assert.strictEqual(res2.ttl, 20);
     });
 
     it('deleteLogstore should ok', async function () {
-      var result = await client.deleteLogstore(testProject, logstoreName);
-      assert.strictEqual(result.statusCode, 200);
-      assert.strictEqual(result.body, '');
+      const res = await client.deleteLogstore(testProject, logstoreName);
+      assert.strictEqual(res, '');
       try {
-        var r = await client.getLogstore(testProject, logstoreName);
+        const res2 = await client.getLogstore(testProject, logstoreName);
       } catch (ex) {
         assert.strictEqual(ex.code, 'LogStoreNotExist');
         return;
@@ -148,30 +141,25 @@ describe('Integration test', async function () {
 
   describe('log index', async function() {
     it('createIndex should ok', async function() {
-      var result = await client.createIndex(testProject, testStore, index);
-      assert.strictEqual(result.statusCode, 200);
-      var result = await client.getIndexConfig(testProject, testStore);
-      assert.strictEqual(result.statusCode, 200);
+      const res1 = await client.createIndex(testProject, testStore, index);
+      const res2 = await client.getIndexConfig(testProject, testStore);
       // The effective TTL is always the same as the one in the
       // log project config, setting it here does not affect the config
-      assert.strictEqual(typeof result.body.ttl, "number");
-      assert.deepStrictEqual(result.body.keys, index.keys);
+      assert.strictEqual(typeof res2.ttl, "number");
+      assert.deepStrictEqual(res2.keys, index.keys);
     });
 
     it('updateIndex should ok', async function() {
-      var result = await client.updateIndex(testProject, testStore, index2);
-      assert.strictEqual(result.statusCode, 200);
-      var result = await client.getIndexConfig(testProject, testStore);
-      assert.strictEqual(result.statusCode, 200);
-      assert.deepStrictEqual(result.body.keys, index2.keys);
+      const res1 = await client.updateIndex(testProject, testStore, index2);
+      const res2 = await client.getIndexConfig(testProject, testStore);
+      assert.deepStrictEqual(res2.keys, index2.keys);
     });
 
     it('deleteIndex should ok', async function() {
-      var result = await client.deleteIndex(testProject, testStore);
-      assert.strictEqual(result.statusCode, 200);
-      assert.strictEqual(result.body, '');
+      const res1 = await client.deleteIndex(testProject, testStore);
+      assert.strictEqual(res1, '');
       try {
-        var r = await client.getIndexConfig(testProject, testStore);
+        const res2 = await client.getIndexConfig(testProject, testStore);
       } catch (ex) {
         assert.strictEqual(ex.code, 'IndexConfigNotExist');
         return;
@@ -187,9 +175,8 @@ describe('Integration test', async function () {
     const to = new Date();
 
     it('getLogs should ok', async function () {
-      var result = await client.getLogs(testProject, testStore2, from, to);
-      assert.strictEqual(result.statusCode, 200);
-      assert.strictEqual(Array.isArray(result.body), true);
+      const res = await client.getLogs(testProject, testStore2, from, to);
+      assert.strictEqual(Array.isArray(res), true);
     });
   });
 });
