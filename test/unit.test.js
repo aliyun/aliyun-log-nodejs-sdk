@@ -2,7 +2,7 @@
 
 const assert = require('assert');
 
-const Client = require('../lib/client');
+const Client = require('../');
 
 describe('Unit test', function () {
   it('client constructor should set endpoint correctly', function () {

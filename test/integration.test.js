@@ -1,7 +1,7 @@
 'use strict';
 
 const assert = require('assert');
-const Client = require('../lib/client');
+const Client = require('../');
 
 const testProject = process.env.TEST_PROJECT;
 const testStore = process.env.TEST_STORE;
@@ -24,7 +24,7 @@ assert.strictEqual(typeof testStore2, 'string',
   'with an index before running the integration test');
 assert.strictEqual(typeof accessKeyId, 'string',
   'set ACCESS_KEY_ID envrinoment variable before running the integration test');
-assert.strictEqual(typeof accessKeySecret, 'string', 
+assert.strictEqual(typeof accessKeySecret, 'string',
   'set ACCESS_KEY_SECRET envrinoment variable before running ' +
   'the integration test');
 
