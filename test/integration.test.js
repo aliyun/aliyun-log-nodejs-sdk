@@ -95,41 +95,41 @@ describe('Integration test', async function () {
   describe('log store CRUD', async function () {
     const logstoreName = `test-logs-${Date.now()}`;
 
-    it('createLogstore should ok', async function () {
-      const res1 = await client.createLogstore(testProject, logstoreName, {
+    it('createLogStore should ok', async function () {
+      const res1 = await client.createLogStore(testProject, logstoreName, {
         ttl: 10,
         shardCount: 2
       });
       assert.strictEqual(res1, '');
-      const res2 = await client.getLogstore(testProject, logstoreName);
+      const res2 = await client.getLogStore(testProject, logstoreName);
       assert.strictEqual(res2.logstoreName, logstoreName);
       assert.strictEqual(res2.ttl, 10);
     });
 
-    it('listLogstore should ok', async function () {
-      const res = await client.listLogstore(testProject);
+    it('listLogStore should ok', async function () {
+      const res = await client.listLogStore(testProject);
       assert.strictEqual(typeof res.count, 'number');
       assert.strictEqual(typeof res.total, 'number');
       assert.strictEqual(Array.isArray(res.logstores), true);
       assert.strictEqual(res.logstores.length > 0, true);
     });
 
-    it('updateLogstore should ok', async function () {
-      const res1 = await client.updateLogstore(testProject, logstoreName, {
+    it('updateLogStore should ok', async function () {
+      const res1 = await client.updateLogStore(testProject, logstoreName, {
         ttl: 20,
         shardCount: 2
       });
       assert.strictEqual(res1, '');
-      const res2 = await client.getLogstore(testProject, logstoreName);
+      const res2 = await client.getLogStore(testProject, logstoreName);
       assert.strictEqual(res2.logstoreName, logstoreName);
       assert.strictEqual(res2.ttl, 20);
     });
 
-    it('deleteLogstore should ok', async function () {
-      const res = await client.deleteLogstore(testProject, logstoreName);
+    it('deleteLogStore should ok', async function () {
+      const res = await client.deleteLogStore(testProject, logstoreName);
       assert.strictEqual(res, '');
       try {
-        const res2 = await client.getLogstore(testProject, logstoreName);
+        const res2 = await client.getLogStore(testProject, logstoreName);
       } catch (ex) {
         assert.strictEqual(ex.code, 'LogStoreNotExist');
         return;
