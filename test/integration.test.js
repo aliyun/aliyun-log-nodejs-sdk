@@ -8,6 +8,7 @@ const testStore = process.env.TEST_STORE;
 const testStore2 = process.env.TEST_STORE2;
 const accessKeyId = process.env.ACCESS_KEY_ID;
 const accessKeySecret = process.env.ACCESS_KEY_SECRET;
+const region = process.env.REGION;
 const PROJECT_DELAY = 1500;
 
 // Due to a bug in SLS we need to use a existing project to test log store CRUD
@@ -32,7 +33,7 @@ assert.strictEqual(typeof accessKeySecret, 'string',
 const client = new Client({
   accessKeyId,
   accessKeySecret,
-  region: 'cn-shanghai'
+  region: region || 'cn-shanghai'
 });
 
 const index = {
@@ -40,7 +41,7 @@ const index = {
   "keys": {
     "functionName": {
       "caseSensitive": false,
-      "token": [ "\n", "\t", ";", ",", "=", ":" ],
+      "token": ["\n", "\t", ";", ",", "=", ":"],
       "type": "text"
     }
   },
@@ -51,7 +52,7 @@ const index2 = {
   "keys": {
     "serviceName": {
       "caseSensitive": false,
-      "token": [ "\n", "\t", ";", ",", "=", ":" ],
+      "token": ["\n", "\t", ";", ",", "=", ":"],
       "type": "text"
     }
   },
@@ -139,8 +140,8 @@ describe('Integration test', async function () {
     });
   });
 
-  describe('log index', async function() {
-    it('createIndex should ok', async function() {
+  describe('log index', async function () {
+    it('createIndex should ok', async function () {
       const res1 = await client.createIndex(testProject, testStore, index);
       const res2 = await client.getIndexConfig(testProject, testStore);
       // The effective TTL is always the same as the one in the
@@ -149,13 +150,13 @@ describe('Integration test', async function () {
       assert.deepStrictEqual(res2.keys, index.keys);
     });
 
-    it('updateIndex should ok', async function() {
+    it('updateIndex should ok', async function () {
       const res1 = await client.updateIndex(testProject, testStore, index2);
       const res2 = await client.getIndexConfig(testProject, testStore);
       assert.deepStrictEqual(res2.keys, index2.keys);
     });
 
-    it('deleteIndex should ok', async function() {
+    it('deleteIndex should ok', async function () {
       const res1 = await client.deleteIndex(testProject, testStore);
       assert.strictEqual(res1, '');
       try {
@@ -177,6 +178,21 @@ describe('Integration test', async function () {
     it('getLogs should ok', async function () {
       const res = await client.getLogs(testProject, testStore2, from, to);
       assert.strictEqual(Array.isArray(res), true);
+    });
+  });
+
+  describe('postLogStoreLogs', async function () {
+    const logGroup = {
+      logs: [
+        { content: { level: 'debug', message: 'test1-' + Date.now() }, timestamp: Math.floor(new Date().getTime() / 1000) },
+        { content: { level: 'info', message: 'test2-' + Date.now() }, timestamp: Math.floor(new Date().getTime() / 1000) }
+      ],
+      tags: [{ tag1: 'testTag' }]
+    };
+
+    it('postLogStoreLogs should ok', async function () {
+      const res = await client.postLogStoreLogs(testProject, testStore2, logGroup);
+      assert.strictEqual(res, '');
     });
   });
 });

@@ -14,7 +14,8 @@
   "dependencies": {
     "debug": "^2.6.8",
     "httpx": "^2.1.2",
-    "kitx": "^1.2.1"
+    "kitx": "^1.2.1",
+    "protobufjs": "^6.8.8"
   },
   "devDependencies": {
     "expect.js": "^0.3.1",
