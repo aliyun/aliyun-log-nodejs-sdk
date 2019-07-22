@@ -1,5 +1,5 @@
 {
-  "name": "@alicloud/log",
+  "name": "alicloud-log",
   "version": "1.1.0",
   "description": "Aliyun Log Service Node.js SDK",
   "main": "index.js",
@@ -12,7 +12,7 @@
   "author": "Jackson Tian",
   "license": "MIT",
   "dependencies": {
-    "debug": "^2.6.8",
+    "debug": "^4",
     "httpx": "^2.1.2",
     "kitx": "^1.2.1",
     "protobufjs": "^6.8.8"
