@@ -170,6 +170,19 @@ describe('Integration test', async function () {
     });
   });
 
+  describe('getProjectLogs', async function () {
+    const from = new Date();
+    from.setDate(from.getDate() - 1);
+    const to = new Date();
+
+    it('getProjectLogs should ok', async function () {
+      const res = await client.getProjectLogs(testProject, {
+        query:`select count(*) as count  from tengine-log where __time__ >'${Math.round(from.getTime()/1000) }' and __time__ < '${Math.round(to.getTime()/1000)}' limit 0,20`,
+      });
+      assert.strictEqual(Array.isArray(res), true);
+    });
+  });
+
   describe('getLogs', async function () {
     const from = new Date();
     from.setDate(from.getDate() - 1);
@@ -177,6 +190,17 @@ describe('Integration test', async function () {
 
     it('getLogs should ok', async function () {
       const res = await client.getLogs(testProject, testStore2, from, to);
+      assert.strictEqual(Array.isArray(res), true);
+    });
+  });
+
+  describe('getHistograms', async function () {
+    const from = new Date();
+    from.setDate(from.getDate() - 1);
+    const to = new Date();
+
+    it('getLogs should ok', async function () {
+      const res = await client.getHistograms(testProject, testStore2, from, to);
       assert.strictEqual(Array.isArray(res), true);
     });
   });
