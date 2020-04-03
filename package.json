@@ -1,10 +1,11 @@
 {
   "name": "@alicloud/log",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Aliyun Log Service Node.js SDK",
   "main": "index.js",
   "directories": {
-    "lib": "lib"
+    "lib": "lib",
+    "test": "test"
   },
   "scripts": {
     "test": "make test"
@@ -25,5 +26,13 @@
   "files": [
     "lib",
     "index.js"
-  ]
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aliyun/aliyun-log-nodejs-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/aliyun/aliyun-log-nodejs-sdk/issues"
+  },
+  "homepage": "https://github.com/aliyun/aliyun-log-nodejs-sdk#readme"
 }
