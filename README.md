@@ -31,7 +31,8 @@ const client = new Client({
 });
 ```
 
-### Use Credentials Provider
+### Use Credentials Provider  
+
 The CredentialsProvider offers a more convenient and secure way to obtain credentials from external sources. You can retrieve these credentials from your server or other Alibaba Cloud services, and rotate them on a regular basis.
 
 ```javaScript
