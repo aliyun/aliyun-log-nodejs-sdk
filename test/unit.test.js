@@ -29,7 +29,7 @@ describe('Unit test', function () {
       date: 'Mon, 09 Nov 2015 06:11:16 GMT',
       'x-log-apiversion': '0.6.0',
       'x-log-signaturemethod': 'hmac-sha1'
-    });
+    }, client._getCredentials());
     assert.strictEqual(sign,
       'LOG bq2sjzesjmo86kq35behupbq:jEYOTCJs2e88o+y5F4/S5IsnBJQ=');
   });
@@ -50,7 +50,7 @@ describe('Unit test', function () {
       'content-type': 'application/x-protobuf',
       'x-log-bodyrawsize': '50',
       'x-log-compresstype': 'lz4'
-    });
+    }, client._getCredentials());
     assert.strictEqual(sign,
       'LOG bq2sjzesjmo86kq35behupbq:XWLGYHGg2F2hcfxWxMLiNkGki6g=');
   });
@@ -74,7 +74,7 @@ describe('Unit test', function () {
       'x-log-bodyrawsize': '50',
       'x-log-compresstype': 'lz4',
       'x-acs-security-token': credentials.securityToken,
-    });
+    }, client._getCredentials());
     assert.strictEqual(sign,
       'LOG STS.NSNYgJ2KUoYaEuDrNazRLg2a6:G3R03b6PwVI+zUaLtqezsBDL/j8=');
   });
