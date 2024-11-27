@@ -12,7 +12,10 @@
 
 ## Init Client
 
-### Use long live accessKey
+### Use permanent accessKey
+
+use region  
+
 ```javaScript
 const client = new Client({
   accessKeyId: "your_access_key_id",
@@ -21,7 +24,7 @@ const client = new Client({
 });
 ```
 
-or use endpoint
+or use endpoint  
 
 ```javaScript
 const client = new Client({
@@ -33,7 +36,7 @@ const client = new Client({
 
 ### Use Credentials Provider  
 
-The CredentialsProvider offers a more convenient and secure way to obtain credentials from external sources. You can retrieve these credentials from your server or other Alibaba Cloud services, and rotate them on a regular basis.
+The CredentialsProvider offers a more convenient and secure way to obtain credentials from external sources. You can retrieve these credentials from your server or other Alibaba Cloud services, and rotate them on a regular basis.  
 
 ```javaScript
 const yourCredentialsProvider = new YourCredentialsProvider();
@@ -43,7 +46,12 @@ const client = new Client({
 });
 ```
 
-The credentialsProvider must be an object with getCredentials function, for example:
+The credentialsProvider implemented by yourself must be an object that has a property named   `getCredentials`, and `getCredentials` is a callable function/method that returns a credentials object.  
+
+The returned credentials object from `getCredentials` must not be null or undefined, and has properties named `accessKeyId`, `accessKeySecret` and `securityToken`.
+
+Here is a simple example of a credentialsProvider:  
+
 ```javaScript
 class YourCredentialsProvider {
   constructor() {
