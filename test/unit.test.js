@@ -14,7 +14,7 @@ describe('Unit test', function () {
     assert.strictEqual(client.endpoint, 'cn-hangzhou.log.aliyuncs.com');
   });
 
-  it('client#_sign should sign GET requests correctly', function () {
+  it('client#_sign should sign GET requests correctly', async function () {
     const client = new Client({
       accessKeyId: "bq2sjzesjmo86kq35behupbq",
       accessKeySecret: "4fdO2fTDDnZPU/L7CHNdemB2Nsk="
@@ -29,12 +29,12 @@ describe('Unit test', function () {
       date: 'Mon, 09 Nov 2015 06:11:16 GMT',
       'x-log-apiversion': '0.6.0',
       'x-log-signaturemethod': 'hmac-sha1'
-    }, client._getCredentials());
+    }, await client._getCredentials());
     assert.strictEqual(sign,
       'LOG bq2sjzesjmo86kq35behupbq:jEYOTCJs2e88o+y5F4/S5IsnBJQ=');
   });
 
-  it('client#_sign should sign POST requests correctly', function () {
+  it('client#_sign should sign POST requests correctly', async function () {
     const client = new Client({
       accessKeyId: "bq2sjzesjmo86kq35behupbq",
       accessKeySecret: "4fdO2fTDDnZPU/L7CHNdemB2Nsk="
@@ -50,12 +50,12 @@ describe('Unit test', function () {
       'content-type': 'application/x-protobuf',
       'x-log-bodyrawsize': '50',
       'x-log-compresstype': 'lz4'
-    }, client._getCredentials());
+    }, await client._getCredentials());
     assert.strictEqual(sign,
       'LOG bq2sjzesjmo86kq35behupbq:XWLGYHGg2F2hcfxWxMLiNkGki6g=');
   });
 
-  it('client#_sign should sign POST requests correctly with STS token', function () {
+  it('client#_sign should sign POST requests correctly with STS token', async function () {
     const credentials = {
       accessKeyId: 'STS.NSNYgJ2KUoYaEuDrNazRLg2a6',
       accessKeySecret: '56Xqw2THF5vTHTNkGWR6uGRKXToKWMi2eLFjppPNV8RR',
@@ -74,12 +74,12 @@ describe('Unit test', function () {
       'x-log-bodyrawsize': '50',
       'x-log-compresstype': 'lz4',
       'x-acs-security-token': credentials.securityToken,
-    }, client._getCredentials());
+    }, await client._getCredentials());
     assert.strictEqual(sign,
       'LOG STS.NSNYgJ2KUoYaEuDrNazRLg2a6:G3R03b6PwVI+zUaLtqezsBDL/j8=');
   });
 
-  it('client with credentialsProvider, getCredentials is not function', function () {
+  it('client with credentialsProvider, getCredentials is not function', async function () {
     expect(function () {
       new Client({
       credentialsProvider: {
@@ -88,28 +88,45 @@ describe('Unit test', function () {
     });
     }).to.throw(Error);
   });
-  it('client init with credentialsProvider has no method getCredentials', function () {
+  it('client init with credentialsProvider has no method getCredentials', async function () {
     expect(function () {
       new Client({
       credentialsProvider: {}
     });
     }).to.throw(Error);
   });
-  it('client init with credentialsProvider, getCredentials return invalid credentials', function () {
+  it('client init with credentialsProvider has sync method getCredentials', async function () {
     expect(function () {
       new Client({
       credentialsProvider: {
         getCredentials: function () {
           return {
-            accessKeyId: "invalid accessKeyId"
+            accessKeyId: "accessKeyId",
+            accessKeySecret: "accessKeySecret"
           };
         }
       }
     });
     }).to.throw(Error);
   });
+  it('client init with credentialsProvider, getCredentials return invalid credentials', async function () {
+    const client = new Client({
+      credentialsProvider: {
+        getCredentials: async function () {
+          return {
+            accessKeyId: "invalid accessKeyId"
+          };
+        }
+      }
+    });
+    try {
+      await client._getCredentials();
+      assert.fail('Expected function to throw an error');
+    } catch (e) {
+    }
+  });
 
-  it('client init with credentialsProvider, with sts', function () {
+  it('client init with credentialsProvider, with sts', async function () {
   const credentials = {
       accessKeyId: 'STS.NSNYgJ2KUoYaEuDrNazRLg2a6',
       accessKeySecret: '56Xqw2THF5vTHTNkGWR6uGRKXToKWMi2eLFjppPNV8RR',
@@ -117,7 +134,7 @@ describe('Unit test', function () {
     };
     const client = new Client({
       credentialsProvider: {
-        getCredentials: function () {
+        getCredentials: async function () {
           return credentials;
         }
       }
@@ -134,7 +151,7 @@ describe('Unit test', function () {
       'x-log-bodyrawsize': '50',
       'x-log-compresstype': 'lz4',
       'x-acs-security-token': credentials.securityToken,
-    }, client._getCredentials());
+    }, await client._getCredentials());
     assert.strictEqual(sign,
       'LOG STS.NSNYgJ2KUoYaEuDrNazRLg2a6:G3R03b6PwVI+zUaLtqezsBDL/j8=');
   });
