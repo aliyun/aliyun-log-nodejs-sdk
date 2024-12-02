@@ -63,7 +63,7 @@ class YourCredentialsProvider {
   }
   // The method getCredentials is called by client to get credentials for signing and authentication.
   // Caching and refreshing logic is required in your implementation for performance.
-  getCredentials() {
+  async getCredentials() {
     return this.credentials;
   }
 }
