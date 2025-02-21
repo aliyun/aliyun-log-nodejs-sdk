@@ -219,4 +219,21 @@ describe('Integration test', async function () {
       assert.strictEqual(res, '');
     });
   });
+
+  describe('postLogStoreLogsWithTopicSource', async function () {
+    const logGroup = {
+      logs: [
+        { content: { level: 'debug', message: 'test1-' + Date.now() }, timestamp: Math.floor(new Date().getTime() / 1000) },
+        { content: { level: 'info', message: 'test2-' + Date.now() }, timestamp: Math.floor(new Date().getTime() / 1000) }
+      ],
+      tags: [{ tag1: 'testTag' }],
+      topic: 'testTopic',
+      source: 'testSource'
+    };
+
+    it('postLogStoreLogsWithTopicSource should ok', async function () {
+      const res = await client.postLogStoreLogs(testProject, testStore2, logGroup);
+      assert.strictEqual(res, '');
+    });
+  });
 });
