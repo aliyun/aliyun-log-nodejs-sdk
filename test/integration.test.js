@@ -236,4 +236,27 @@ describe('Integration test', async function () {
       assert.strictEqual(res, '');
     });
   });
+  describe('postLogStoreLogsWithTimeNs', async function () {
+    const logGroup = {
+      logs: [
+        {
+          content: { level: 'debug', message: 'test1-' + Date.now() },
+          timestamp: Math.floor(new Date().getTime() / 1000),
+          timestampNsPart: Math.floor(new Date().getTime() * 1000 * 1000) % 1000000000,
+        },
+        {
+          content: { level: 'info', message: 'test2-' + Date.now() }, timestamp: Math.floor(new Date().getTime() / 1000),
+          timestampNsPart: Math.floor(new Date().getTime() * 1000 * 1000) % 1000000000,
+        }
+      ],
+      tags: [{ tag1: 'testTag' }],
+      topic: 'ns',
+      source: 'ns'
+    };
+
+    it('postLogStoreLogsWithTimeNs should ok', async function () {
+      const res = await client.postLogStoreLogs(testProject, testStore2, logGroup);
+      assert.strictEqual(res, '');
+    });
+  });
 });
