@@ -33,7 +33,15 @@ assert.strictEqual(typeof accessKeySecret, 'string',
 const client = new Client({
   accessKeyId,
   accessKeySecret,
-  region: region || 'cn-shanghai'
+  region: region || 'cn-hangzhou'
+});
+
+// HTTPS client for testing HTTPS protocol support
+const httpsClient = new Client({
+  accessKeyId,
+  accessKeySecret,
+  region: region || 'cn-hangzhou',
+  use_https: true
 });
 
 const index = {
@@ -257,6 +265,43 @@ describe('Integration test', async function () {
     it('postLogStoreLogsWithTimeNs should ok', async function () {
       const res = await client.postLogStoreLogs(testProject, testStore2, logGroup);
       assert.strictEqual(res, '');
+    });
+  });
+
+  describe('HTTPS protocol support', async function () {
+    it('listLogStore via HTTPS should ok', async function () {
+      const res = await httpsClient.listLogStore(testProject);
+      assert.strictEqual(typeof res.count, 'number');
+      assert.strictEqual(typeof res.total, 'number');
+      assert.strictEqual(Array.isArray(res.logstores), true);
+    });
+  });
+
+  describe('HTTPS protocol support with endpoint', async function () {
+    it('listLogStore via HTTPS with endpoint should ok', async function () {
+      const client = new Client({
+        accessKeyId,
+        accessKeySecret,
+        endpoint: 'https://cn-hangzhou.log.aliyuncs.com'
+      });
+      const res = await client.listLogStore(testProject);
+      assert.strictEqual(typeof res.count, 'number');
+      assert.strictEqual(typeof res.total, 'number');
+      assert.strictEqual(Array.isArray(res.logstores), true);
+    });
+  });
+
+  describe('HTTP protocol support with endpoint', async function () {
+    it('listLogStore via HTTP with endpoint should ok', async function () {
+      const client = new Client({
+        accessKeyId,
+        accessKeySecret,
+        endpoint: 'http://cn-hangzhou.log.aliyuncs.com'
+      });
+      const res = await client.listLogStore(testProject);
+      assert.strictEqual(typeof res.count, 'number');
+      assert.strictEqual(typeof res.total, 'number');
+      assert.strictEqual(Array.isArray(res.logstores), true);
     });
   });
 });
