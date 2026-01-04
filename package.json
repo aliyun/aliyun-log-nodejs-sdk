@@ -1,31 +1,35 @@
 {
-  "name": "@alicloud/log",
-  "version": "1.2.6",
+  "name": "alicloud-log-ts",
+  "version": "2.1.2",
   "description": "Aliyun Log Service Node.js SDK",
   "main": "index.js",
+  "types": "dist/index.d.ts",
   "directories": {
-    "lib": "lib",
     "test": "test"
   },
   "scripts": {
-    "test": "make test"
+    "build": "tsc && node scripts/copy-proto.js",
+    "test": "vitest run --coverage",
+    "test:watch": "vitest",
+    "test:upload": "tsx test-log-upload.ts",
+    "prepack": "node scripts/copy-proto.js"
   },
   "author": "Jackson Tian",
   "license": "MIT",
   "dependencies": {
-    "debug": "^2.6.8",
-    "httpx": "^2.1.2",
-    "kitx": "^1.2.1",
-    "protobufjs": "^6.8.8"
+    "debug": "^4.4.3",
+    "protobufjs": "^8.0.0"
   },
   "devDependencies": {
-    "chai": "^5.1.2",
-    "expect.js": "^0.3.1",
-    "mocha": "^3.5.0",
-    "nyc": "^11.1.0"
+    "@types/node": "^25.0.3",
+    "@types/debug": "^4.1.12",
+    "@vitest/coverage-v8": "^4.0.16",
+    "tsx": "^4.20.1",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.16"
   },
   "files": [
-    "lib",
+    "dist",
     "index.js"
   ],
   "repository": {
